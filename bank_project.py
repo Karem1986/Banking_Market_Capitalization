@@ -9,10 +9,6 @@ def log_progress(message):
 
 url = "https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks"
 tables = pd.read_html(url, header=0)
-
-print(f"Number of tables found: {len(tables)}")
-# for idx, table in enumerate(tables):
-#     print(f"Table {idx} columns: {list(table.columns)}")
     
     
 # Extract the second table (index 1) and check its columns
