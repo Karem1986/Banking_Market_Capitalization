@@ -28,14 +28,26 @@ if __name__ == "__main__":
     extracted_data = extract()
     print(extracted_data)  # Verify output
     log_progress("Extraction function executed and output verified")
+    
+# Transform the dataframe by adding columns for Market Capitalization in GBP, EUR and INR, rounded to 2 decimal places, 
+# based on the exchange rate information shared as a CSV file.
 
-# Upload the image ‘Task_3a_transform.png’. This should show the code for the function ‘transform’ used in the project. (1 point)
-# Function to transform the data
 def transform(df):
-    log_progress("Starting data transformation")
-    # Convert Market Cap to numeric and handle errors
+    # Load exchange rates
+    exchange_url = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMSkillsNetwork-PY0221EN-Coursera/labs/v2/exchange_rate.csv"
+    rates = pd.read_csv(exchange_url, index_col=0).squeeze("columns")
+    # Ensure MC_USD_Billion is numeric
     df["MC_USD_Billion"] = pd.to_numeric(df["MC_USD_Billion"], errors="coerce")
-    # Drop rows with NaN values
-    df = df.dropna()
-    log_progress("Data transformation complete")
+    # Add new columns, rounded to 2 decimals
+    df["MC_GBP_Billion"] = (df["MC_USD_Billion"] * rates["GBP"]).round(2)
+    df["MC_EUR_Billion"] = (df["MC_USD_Billion"] * rates["EUR"]).round(2)
+    df["MC_INR_Billion"] = (df["MC_USD_Billion"] * rates["INR"]).round(2)
+    log_progress("Data transformed with exchange rates")
     return df
+
+# Example usage:
+if __name__ == "__main__":
+    extracted_data = extract()
+    transformed_data = transform(extracted_data)
+    print(transformed_data.head())  # Verify output
+    log_progress("Transform function executed and output verified")
