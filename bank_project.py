@@ -49,5 +49,9 @@ def transform(df):
 if __name__ == "__main__":
     extracted_data = extract()
     transformed_data = transform(extracted_data)
-    print(transformed_data.head())  # Verify output
+    print(transformed_data)  # Verify output
     log_progress("Transform function executed and output verified")
+    
+# Upload the image ‘Task_4_CSV.png’. This should be the contents of the CSV file created from the final table. (1 point)
+# Task 4: 
+# Load the transformed dataframe to an output CSV file. Write a function load_to_csv(), execute a function call and verify the output.
