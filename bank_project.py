@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import sqlite3
 
 # Funcion to log progress messages to a file
 def log_progress(message):
@@ -45,13 +46,37 @@ def transform(df):
     log_progress("Data transformed with exchange rates")
     return df
 
-# Example usage:
 if __name__ == "__main__":
     extracted_data = extract()
     transformed_data = transform(extracted_data)
     print(transformed_data)  # Verify output
     log_progress("Transform function executed and output verified")
     
-# Upload the image ‘Task_4_CSV.png’. This should be the contents of the CSV file created from the final table. (1 point)
-# Task 4: 
-# Load the transformed dataframe to an output CSV file. Write a function load_to_csv(), execute a function call and verify the output.
+# Upload the image ‘Task_4_CSV.png’. This should be the contents of the CSV file created from the final table
+# Load the transformed dataframe to an output CSV file: Output CSV Path	./Largest_banks_data.csv
+def load_to_csv(df, output_path="./Largest_banks_data.csv"):
+    df.to_csv(output_path, index=False)
+    log_progress(f"Data loaded to CSV at {output_path}")
+
+if __name__ == "__main__":
+    extracted_data = extract()
+    transformed_data = transform(extracted_data)
+    load_to_csv(transformed_data)
+    print("Data loaded to CSV successfully")
+    log_progress("Load to CSV function executed and output verified")
+    
+# Load the transformed dataframe to an SQL database server as a table. 
+# Write a function load_to_db(), execute a function call and verify the output.
+
+def load_to_db(df, db_path="bank_data.db", table_name="largest_banks"):
+    conn = sqlite3.connect(db_path)
+    df.to_sql(table_name, conn, if_exists='replace', index=False)
+    conn.close()
+    log_progress(f"Data loaded to database at {db_path}, table: {table_name}")
+
+if __name__ == "__main__":
+    extracted_data = extract()
+    transformed_data = transform(extracted_data)
+    load_to_db(transformed_data)
+    print("Data loaded to database successfully")
+    log_progress("Load to DB function executed and output verified")
